@@ -2,9 +2,9 @@ f01:{[]
 	l:read0`:input1.txt;
 	nn:("one";"two";"three";"four";"five";"six";"seven";"eight";"nine"); / Names
 	n:1_.Q.n; / Chars
-	N:(`$nnn:n,nn)!n,n; / Enumerate names/chars
+	N:(`$nn:n,nn)!n,n; / Enumerate names/chars
 	f:{[n;x]x@'i:(first;last)@\:/:where each x in\:n}n; / Find digits 
-	g:{[N;n;x]N$[0h=type x;`$;`$']x:n first each(iasc min@';idesc max@')@\:x:ss/:[x;n]}[N;n]; / Parse named numbers
+	g:{[N;n;x]N$[0h=type x;`$;`$']x:n first each(iasc min@';idesc max@')@\:x:ss/:[x;n]}[N;nn]; / Parse named numbers
 	"j"$(sum"J"$f l;sum"J"$g each l) / Results 
 	}
 f02:{[]	
@@ -177,8 +177,42 @@ f14:{[]
 	}
 
 // Testing
-ignore:`f08`f10`f12
-f:system"f"
-d:1+til count f
-i:f?f except ignore
-show testRes:.[`day`ms`mem`resMatch!/:flip(d;-1;-1;0b);(i;`ms`mem`resMatch);:;]system'["ts ",/:string[f i],\:"[]"],'1b
+results:(
+	55488 55614; 			/ Day 1
+	2593 54699; 			/ Day 2
+	527144 81463996; 		/ Day 3
+	19135 5704953; 			/ Day 4
+	240320250 28580589; 	/ Day 5
+	2612736 29891250; 		/ Day 6
+	256448566 254412181;	/ Day 7
+	21251 0N; 				/ Day 8 //! Finish P2
+	1806615041 1211; 		/ Day 9
+	0N 0N; 					/ Day 10 //! Finish P1/P2
+	9521776 553224415344; 	/ Day 11
+	0N 0N; 					/ Day 12 //! Finish P1/P2
+	37718 40995; 			/ Day 13
+	105208 102943; 			/ Day 14
+	0N 0N; 					/ Day 15
+	0N 0N; 					/ Day 16
+	0N 0N; 					/ Day 17
+	0N 0N; 					/ Day 18
+	0N 0N; 					/ Day 19
+	0N 0N; 					/ Day 20
+	0N 0N; 					/ Day 21
+	0N 0N; 					/ Day 22
+	0N 0N; 					/ Day 23
+	0N 0N; 					/ Day 24
+	0N 0N 					/ Day 25
+	)
+runTests:{[]
+	ignore:`f08`f10`f12;
+	f@:where like[f:system"f";"f[0-9][0-9]"];
+	d:1+til count f;
+	i:f?f except ignore;
+	//~ runs functions twice to get result, time/space is measured on first run
+	testRes:`day`ms`mem`resMatch!/:flip(d;-1;-1;0b);
+	ts:system each"ts ",/:string[f:f i],\:"[]";
+	.[testRes;(i;`ms`mem`resMatch);:;ts,'results[i]~'f@\:()]
+	}
+
+if[()~.z.x;show runTests[]]
