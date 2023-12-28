@@ -176,8 +176,22 @@ f14:{[]
 	"j"$(.f14.h .f14.g l;n .f14.R[;0]) / Results
 	}
 f15:{[]
-	l:read0`:data/example15.txt; / Input data
-	1`;
+	l:first read0`:data/input15.txt; / Input data
+	.f15.H:(); / Init global
+	.f15.f:{[c].f15.H:();{[i;c]$[c=",";[.f15.H,:i;0];mod[17*i+`int$c;256]]}/[0;c,","];sum .f15.H}; / Append when c=","
+	r1:.f15.f l; / P1 
+	g:{[x;c]
+		r:c except/:(.Q.Aa;.Q.a);
+		i:.f15.f j:r 0;
+		b:"-"in r 1;
+		n:"J"$last r 1;
+		$[b;
+			@[x;i;{y except y where y[;0]like x}j];
+			@[x;i;{$[count y;$[x[0]in y[;0];@[y;where y[;0]like x 0;:;enlist x];y,enlist x];enlist x]}(j;n)]]
+		};
+	res@:w:where 0<c:count each res:g/[256#();","vs l];
+	r2:sum(*/)((1+til 256)[w][where c w];raze[1+til each c];raze .[res;(::;::;1)]);
+	(r1;r2) / Results
 	}
 f16:{[]
 	l:read0`:data/example16.txt; / Input data
@@ -225,7 +239,7 @@ results:(
 	0N 0N; 					/ Day 12 //! Finish P1/P2
 	37718 40995; 			/ Day 13
 	105208 102943; 			/ Day 14
-	0N 0N; 					/ Day 15
+	510801 212763; 			/ Day 15
 	0N 0N; 					/ Day 16
 	0N 0N; 					/ Day 17
 	0N 0N; 					/ Day 18
@@ -238,7 +252,7 @@ results:(
 	0N 0N 					/ Day 25
 	)
 runTests:{[]
-	ignore:`f08`f10`f12`f15`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
+	ignore:`f08`f10`f12`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
 	f@:where like[f:system"f";"f[0-9][0-9]"];
 	d:1+til count f;
 	i:f?f except ignore;
