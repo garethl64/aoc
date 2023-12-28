@@ -1,5 +1,5 @@
 f01:{[]
-	l:read0`:input1.txt;
+	l:read0`:data/input1.txt;
 	nn:("one";"two";"three";"four";"five";"six";"seven";"eight";"nine"); / Names
 	n:1_.Q.n; / Chars
 	N:(`$nn:n,nn)!n,n; / Enumerate names/chars
@@ -8,7 +8,7 @@ f01:{[]
 	"j"$(sum"J"$f l;sum"J"$g each l) / Results 
 	}
 f02:{[]	
-	l:read0`:input2.txt; / Input data
+	l:read0`:data/input2.txt; / Input data
 	gc:@[;0;"I"$5_']flip ": "vs/:l;i:gc 0;r:gc 1; / Set game ID and cubes
 	c:("red";"green";"blue")!12 13 14; / Config
 	cc:" "vs/:/:/:", "vs/:/:"; "vs/:r; / Count/Colour
@@ -18,7 +18,7 @@ f02:{[]
 	"j"$(sum i where not max each f each'cc;sum(*/)each max each'.f02.g each ccc) / Results
 	}
 f03:{[]
-	l:read0`:input3.txt; / Input data
+	l:read0`:data/input3.txt; / Input data
 	n:count l;m:count flip l; / Matrix dimensions
 	i:(cross). til each(n;m); / All indices
 	s:except[;.Q.n,"."]distinct raze l; / Distinct symbols ignoring "."
@@ -33,7 +33,7 @@ f03:{[]
 	"j"$(r1;r2) / Results
 	}
 f04:{[]
-	l:read0`:input4.txt; / Input data
+	l:read0`:data/input4.txt; / Input data
 	f:{$[r:count where y in x;-1+r;0N]}; / Number of matching numbers in a card (-1 to account for 2 xexp)
 	g:{$[y;@[x;1+z+til y;x[z]+];x]}; / Resolve copies
 	r1:sum w:0^2 xexp n:f .'except''[;0N]"J"$" "vs/:/:" | "vs/:last each": "vs/:l; / Sum totals for each card
@@ -42,7 +42,7 @@ f04:{[]
 	"j"$(r1;r2) / Results
 	}
 f05:{[]
-	l:read0`:input5.txt; / Input data
+	l:read0`:data/input5.txt; / Input data
 	r:cut[0,where ""~/:l;l]; / Split input
 	s:"J"$" "vs last ": "vs first r 0; / Seeds
 	n:1_'1_r; / Raw maps
@@ -75,7 +75,7 @@ f05:{[]
 	"j"$(r1;r2) / Results
 	}
 f06:{[]
-	l:read0`:input6.txt; / Input data
+	l:read0`:data/input6.txt; / Input data
 	n:except\:[;0N]"J"$l2:1_'" "vs/:l; / Numbers
 	n2:"J"$raze each l2;
 	r1:(*/)count each where each n[1]<{y*x-y}'[n 0;til each n 0]; / P1
@@ -83,7 +83,7 @@ f06:{[]
 	"j"$(r1;r2)
 	}
 f07:{[]
-	l:read0`:input7.txt; / Input data
+	l:read0`:data/input7.txt; / Input data
 	d:reverse[s]!til count s:"AKQJT98765432"; / Enumerate cards
 	b:"J"$6_'l; / Bids
 	h:d 5#'l; / Enumerated hands
@@ -99,7 +99,7 @@ f07:{[]
 	"j"$(r1;r2) / Results
 	}
 f08:{[]
-	l:read0`:input8.txt; / Input data
+	l:read0`:data/input8.txt; / Input data
 	s:first l;l:2_l;c:count s; / Sequence and node network
 	d:{x[0]!flip 1_x}./:[l](::;)each 0 7 12+\:til 3; / Dictionary of nodes
 	f:{[s;d;c;x]i:0;while[not "ZZZ"~x:d[x;"R"~s i mod c];i+:1];1+i}[s;d;c]; / While loop until we hit "ZZZ"
@@ -110,7 +110,7 @@ f08:{[]
 	"j"$(r1;r2) / Results
 	}
 f09:{[]
-	l:read0`:input9.txt; / Input data
+	l:read0`:data/input9.txt; / Input data
 	l:enlist each "J"$" "vs'l; / Lists
 	f:{while[max 0<>d:1_deltas last x;x:x,enlist d];x,enlist d}; / Build deltas
 	r:f'[l]; / All deltas
@@ -119,13 +119,13 @@ f09:{[]
 	"j"$(r1;r2) / Results
 	}
 f10:{[]
-	l:read0`:example10.txt; / Input data
+	l:read0`:data/example10.txt; / Input data
 	n:count l;m:count l 0; / Dimensions
 	n@:where 1=mod[;2]n:til n*m; / Possible paths from center
 	s:first where"S"=r:raze l; / Starting position
 	}
 f11:{[]
-	m:count first l:read0`:input11.txt; / Input data
+	m:count first l:read0`:data/input11.txt; / Input data
 	w:where each b:(min flip@;min)@\:"."=l; / rows/columns with no galaxies
 	i:flip(div[;m];mod[;m])@\:g:where "#"=raze l; / (x;y) of all galaxies
 	.f11.f:{z+?[-1=r;0;y*1+r:x bin'z]}[w]; / Shift indices
@@ -134,12 +134,12 @@ f11:{[]
 	"j"$(h 1;h 999999) / Results
 	}
 f12:{[]
-	l:" "vs'read0`:example12.txt; / Input data
+	l:" "vs'read0`:data/example12.txt; / Input data
 	s:first each l;
 	g:"J"$","vs'last each l;
 	}
 f13:{[]
-	l:" "vs'read0`:input13.txt; / Input data
+	l:" "vs'read0`:data/input13.txt; / Input data
 	l:"#"=raze each l@where 1<>count each l:cut[0,raze 0 1+/:w:where enlist[""]~/:l;l]; / Mirrors (enumerated)
 	l2:{count[x 0]cut'@[r;;not]each til count r:raze x}each l; / All possible smudges
 	.f13.f:{
@@ -155,7 +155,7 @@ f13:{[]
 	"j"$(r1;r2) / Results
 	}
 f14:{[]
-	l:read0`:input14.txt; / Input data
+	l:read0`:data/input14.txt; / Input data
 	r:where each'flip each "O#"=\:l;i:r 0;i:r 1;
 	.f14.f:{
 			if[not count y;:x]; / No point to proceed
@@ -175,7 +175,40 @@ f14:{[]
 			};
 	"j"$(.f14.h .f14.g l;n .f14.R[;0]) / Results
 	}
-
+f15:{[]
+	l:read0`:data/example15.txt; / Input data
+	1`;
+	}
+f16:{[]
+	l:read0`:data/example16.txt; / Input data
+	}
+f17:{[]
+	l:read0`:data/example17.txt; / Input data
+	}
+f18:{[]
+	l:read0`:data/example18.txt; / Input data
+	}
+f19:{[]
+	l:read0`:data/example19.txt; / Input data
+	}
+f20:{[]
+	l:read0`:data/example20.txt; / Input data
+	}
+f21:{[]
+	l:read0`:data/example21.txt; / Input data
+	}
+f22:{[]
+	l:read0`:data/example22.txt; / Input data
+	}
+f23:{[]
+	l:read0`:data/example23.txt; / Input data
+	}
+f24:{[]
+	l:read0`:data/example24.txt; / Input data
+	}
+f25:{[]
+	l:read0`:data/example25.txt; / Input data
+	}
 // Testing
 results:(
 	55488 55614; 			/ Day 1
@@ -205,14 +238,14 @@ results:(
 	0N 0N 					/ Day 25
 	)
 runTests:{[]
-	ignore:`f08`f10`f12;
+	ignore:`f08`f10`f12`f15`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
 	f@:where like[f:system"f";"f[0-9][0-9]"];
 	d:1+til count f;
 	i:f?f except ignore;
 	//~ runs functions twice to get result, time/space is measured on first run
-	testRes:`day`ms`mem`resMatch!/:flip(d;-1;-1;0b);
+	t:`day`ms`mem`resMatch!/:flip(d;-1;-1;0b);
 	ts:system each"ts ",/:string[f:f i],\:"[]";
-	.[testRes;(i;`ms`mem`resMatch);:;ts,'results[i]~'f@\:()]
+	.[t;(i;`ms`mem`resMatch);:;ts,'results[i]~'f@\:()]
 	}
-
-if[()~.z.x;show runTests[]]
+system"c 40 175"
+if[()~.z.x;show testRes:runTests[]]
