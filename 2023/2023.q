@@ -123,10 +123,18 @@ f09:{[]
 	"j"$(r1;r2) / Results
 	}
 f10:{[]
-	l:read0`:data/example10.txt; / Input data
+	l:read0`:data/input10.txt; / Input data
 	n:count l;m:count l 0; / Dimensions
-	n@:where 1=mod[;2]n:til n*m; / Possible paths from center
-	s:first where"S"=r:raze l; / Starting position
+	s:(div[;m];mod[;m])@\:first where"S"=r:raze l; / Starting position
+	nb:".S-|LF7J"!((0 0;0 0);(0 0;0 0);(0 -1;0 1);(-1 0;1 0);(-1 0;0 1);(1 0;0 1);(1 0;0 -1);(0 -1;-1 0));
+	b:where w:./:[l;j:s+/:(-1 0;0 1;1 0;0 -1)]in'("|F7";"-7J";"|JL";"-LF"); / Check neighbours (NESW) for possible path starts
+	i:first j b; / Just take first match
+	// Start at step 1 and calculate next index at each step, loop until back to the start,
+	// returning the distance travelled halved.
+	.f10.S:(s;i);
+	f:{[m;x;y;z]i:1;while["S"<>x . y;i+:1;.f10.S,:enlist y:first except[y+/:nb x . z:y;enlist z]];"j"$i%2}[nb];
+	r1:f[l;i;s]; / Loop through pipes
+	(r1) / Results
 	}
 f11:{[]
 	m:count first l:read0`:data/input11.txt; / Input data
@@ -251,7 +259,7 @@ results:(
 	256448566 254412181;	/ Day 7
 	21251 11678319315857; 	/ Day 8
 	1806615041 1211; 		/ Day 9
-	0N 0N; 					/ Day 10 //! Finish P1/P2
+	6842 0N; 				/ Day 10 //! Finish P2
 	9521776 553224415344; 	/ Day 11
 	0N 0N; 					/ Day 12 //! Finish P1/P2
 	37718 40995; 			/ Day 13
