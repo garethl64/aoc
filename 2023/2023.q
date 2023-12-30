@@ -102,12 +102,16 @@ f08:{[]
 	l:read0`:data/input8.txt; / Input data
 	s:first l;l:2_l;c:count s; / Sequence and node network
 	d:{x[0]!flip 1_x}./:[l](::;)each 0 7 12+\:til 3; / Dictionary of nodes
-	f:{[s;d;c;x]i:0;while[not "ZZZ"~x:d[x;"R"~s i mod c];i+:1];1+i}[s;d;c]; / While loop until we hit "ZZZ"
-	g:{[s;d;c;x]i:0;0N!x;while[not min"Z"=last each x:.[d@/:x;(::;"R"~s i mod c)];0N!x;i+:1];0N!x;1+i}[s;d;c]; / While loop until all nodes end in "Z"
-	dd:key[d]where "A"=last each key d;
-	r1:f "AAA"; / P1
-	r2:g dd; / P2
-	"j"$(r1;r2) / Results
+	cmp:(not"ZZZ"~;not"Z"=last@); / While condition P1/P2
+	f:{[s;d;c;cmp;x]i:0;while[cmp x:d[x;"R"~s i mod c];i+:1];1+i}[s;d;c]; / While loop until we hit "ZZZ" or last char is "Z"
+	// Manually verified that the length of starting node to first loop node is the same
+	// as the loop length for each starting node, therefore least common multiple can be
+	// used to find min steps such that all nodes end in "Z" at the same time 
+	gcd:{1+last where min each 0=x mod/:1+til min x}; / Greatest common divisor
+	lcm:{[g;x;y]"j"$abs[x*y]%g x,y}[gcd]; / Least common multiple
+	r1:f[cmp 0;"AAA"]; / P1
+	r2:(lcm/)f[cmp 1]each key[d]where "A"=last each key d; / P2
+	(r1;r2) / Results
 	}
 f09:{[]
 	l:read0`:data/input9.txt; / Input data
@@ -245,7 +249,7 @@ results:(
 	240320250 28580589; 	/ Day 5
 	2612736 29891250; 		/ Day 6
 	256448566 254412181;	/ Day 7
-	21251 0N; 				/ Day 8 //! Finish P2
+	21251 11678319315857; 	/ Day 8
 	1806615041 1211; 		/ Day 9
 	0N 0N; 					/ Day 10 //! Finish P1/P2
 	9521776 553224415344; 	/ Day 11
@@ -265,7 +269,7 @@ results:(
 	0N 0N 					/ Day 25
 	)
 runTests:{[]
-	ignore:`f08`f10`f12`f16`f17`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
+	ignore:`f10`f12`f16`f17`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
 	f@:where like[f:system"f";"f[0-9][0-9]"];
 	d:1+til count f;
 	i:f?f except ignore;
