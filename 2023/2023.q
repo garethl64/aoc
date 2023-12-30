@@ -200,7 +200,20 @@ f17:{[]
 	l:read0`:data/example17.txt; / Input data
 	}
 f18:{[]
-	l:read0`:data/example18.txt; / Input data
+	l:" "vs'read0`:data/input18.txt; / Input data
+	d:raze l[;0];e:"J"$'l[;1];c:l[;2]; / Directions/lengths/colours
+	f:{
+		b:y[0]in/:("LU";"DU"); / Categorize
+		c:('[;]/)((::;neg);(::;reverse))@'b; / Compose
+		x,enlist last[x]+c 0,y 1 / Return next vertex
+		};
+	i:f/[enlist 0 0;flip(d;e)]; / Find all vertices of shape
+	g:{%[;2]abs[(-). sum each(*).'@[;1;1 rotate]@/:((x;y);(y;x))]}; / Calculate enclosed area using vertices
+	r1:1+.[g;flip i]+sum[e]%2; / P1 (shoelace+pick's theorem)
+	d2:flip(raze"RDLU""0123"?-1#';256 sv'get each "0x",/:-1_')@\:except\:[c;"(#)"];
+	i2:f/[enlist 0 0;d2];
+	r2:1+.[g;flip i2]+sum[d2[;1]]%2; / P2 (recalculate d,e and use shoelace+pick's theorem again)
+	"j"$(r1;r2)
 	}
 f19:{[]
 	l:read0`:data/example19.txt; / Input data
@@ -242,7 +255,7 @@ results:(
 	510801 212763; 			/ Day 15
 	0N 0N; 					/ Day 16
 	0N 0N; 					/ Day 17
-	0N 0N; 					/ Day 18
+	61661 111131796939729; 	/ Day 18
 	0N 0N; 					/ Day 19
 	0N 0N; 					/ Day 20
 	0N 0N; 					/ Day 21
@@ -252,14 +265,13 @@ results:(
 	0N 0N 					/ Day 25
 	)
 runTests:{[]
-	ignore:`f08`f10`f12`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
+	ignore:`f08`f10`f12`f16`f17`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
 	f@:where like[f:system"f";"f[0-9][0-9]"];
 	d:1+til count f;
 	i:f?f except ignore;
-	//~ runs functions twice to get result, time/space is measured on first run
 	t:`day`ms`mem`resMatch!/:flip(d;-1;-1;0b);
-	ts:system each"ts ",/:string[f:f i],\:"[]";
-	.[t;(i;`ms`mem`resMatch);:;ts,'results[i]~'f@\:()]
+	.[t;(i;`ms`mem`resMatch);:;fts .'flip(f;results)@\:i]
 	}
+fts:{[f;r].Q.gc[];ts:system ssr["ts .dbg.res:f[]";"f";string f];res:r~.dbg.res;delete res from`.dbg;.Q.gc[];ts,enlist res}
 system"c 40 175"
 if[()~.z.x;show testRes:runTests[]]
