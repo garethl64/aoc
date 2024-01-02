@@ -132,9 +132,11 @@ f10:{[]
 	// Start at step 1 and calculate next index at each step, loop until back to the start,
 	// returning the distance travelled halved.
 	.f10.S:(s;i);
-	f:{[m;x;y;z]i:1;while["S"<>x . y;i+:1;.f10.S,:enlist y:first except[y+/:nb x . z:y;enlist z]];"j"$i%2}[nb];
+	f:{[m;x;y;z]i:1;while["S"<>x . y;i+:1;.f10.S,:enlist y:first except[y+/:m x . z:y;enlist z]];"j"$i%2}[nb];
 	r1:f[l;i;s]; / Loop through pipes
-	(r1) / Results
+	g:{%[;2]abs[(-). sum each(*).'@[;1;1 rotate]@/:((x;y);(y;x))]}; / Shoelace formula
+	r2:"j"$1+.[g;flip .f10.S]-div[count .f10.S;2]; / P2 (shoelace+pick's theorem - i = 1 + A - b/2 )
+	(r1;r2) / Results
 	}
 f11:{[]
 	m:count first l:read0`:data/input11.txt; / Input data
@@ -259,7 +261,7 @@ results:(
 	256448566 254412181;	/ Day 7
 	21251 11678319315857; 	/ Day 8
 	1806615041 1211; 		/ Day 9
-	6842 0N; 				/ Day 10 //! Finish P2
+	6842 393; 				/ Day 10
 	9521776 553224415344; 	/ Day 11
 	0N 0N; 					/ Day 12 //! Finish P1/P2
 	37718 40995; 			/ Day 13
@@ -277,7 +279,7 @@ results:(
 	0N 0N 					/ Day 25
 	)
 runTests:{[]
-	ignore:`f10`f12`f16`f17`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
+	ignore:`f12`f16`f17`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
 	f@:where like[f:system"f";"f[0-9][0-9]"];
 	d:1+til count f;
 	i:f?f except ignore;
