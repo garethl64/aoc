@@ -8,31 +8,31 @@ f1:{[]
 
 // Testing
 results:(
-        0N 0N;                                  / Day 1
-        0N 0N;                                  / Day 2
-        0N 0N;                                  / Day 3
-        0N 0N;                                  / Day 4
-        0N 0N;                                  / Day 5
-        0N 0N;                                  / Day 6
-        0N 0N;                                  / Day 7
-        0N 0N;                                  / Day 8
-        0N 0N;                                  / Day 9
-        0N 0N;                                  / Day 10
-        0N 0N;                                  / Day 11
-        0N 0N;                                  / Day 12
-        0N 0N;                                  / Day 13
-        0N 0N;                                  / Day 14
-        0N 0N;                                  / Day 15
-        0N 0N;                                  / Day 16
-        0N 0N;                                  / Day 17
-        0N 0N;                                  / Day 18
-        0N 0N;                                  / Day 19
-        0N 0N;                                  / Day 20
-        0N 0N;                                  / Day 21
-        0N 0N;                                  / Day 22
-        0N 0N;                                  / Day 23
-        0N 0N;                                  / Day 24
-        0N 0N                                   / Day 25
+        1873376 18997088; 			/ Day 1
+        0N 0N; 						/ Day 2
+        0N 0N; 						/ Day 3
+        0N 0N; 						/ Day 4
+        0N 0N; 						/ Day 5
+        0N 0N; 						/ Day 6
+        0N 0N; 						/ Day 7
+        0N 0N; 						/ Day 8
+        0N 0N; 						/ Day 9
+        0N 0N; 						/ Day 10
+        0N 0N; 						/ Day 11
+        0N 0N; 						/ Day 12
+        0N 0N; 						/ Day 13
+        0N 0N; 						/ Day 14
+        0N 0N; 						/ Day 15
+        0N 0N; 						/ Day 16
+        0N 0N; 						/ Day 17
+        0N 0N; 						/ Day 18
+        0N 0N; 						/ Day 19
+        0N 0N; 						/ Day 20
+        0N 0N; 						/ Day 21
+        0N 0N; 						/ Day 22
+        0N 0N; 						/ Day 23
+        0N 0N; 						/ Day 24
+        0N 0N  						/ Day 25
         )
 
 // Run tests
