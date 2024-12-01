@@ -1,6 +1,10 @@
 set'[`$"f",/:string 1+til 25;{}]
 
-f1:{[] 0N 0N}
+f1:{[] 
+	p1:sum abs(-). {x iasc x}each l:flip"J"$"   "vs/:read0`:data/input1.txt;
+	p2:sum l[0]*0^count'[group l 1]l 0;
+	(p1;p2)
+	}
 
 // Testing
 results:(
