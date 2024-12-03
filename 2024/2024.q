@@ -1,12 +1,12 @@
 set'[`$"f",/:string 1+til 25;{}]
 
-f1:{[] 
+f01:{[] 
 	p1:sum abs(-). {x iasc x}each l:flip"J"$"   "vs/:read0`:data/input1.txt; / Part 1
 	p2:sum l[0]*0^count'[group l 1]l 0; / Part 2
 	(p1;p2)
 	}
 
-f2:{[]
+f02:{[]
 	d:"J"$" "vs/:read0`:data/input2.txt; / Get data
 	f:{(not 0b in'(abs 1_'deltas each x)within\:1 3)&(|/)not 0b in''(0>;0<)@\:1_'deltas each x}; / Safe report check
 	p1:sum f d; / Part 1
@@ -45,7 +45,7 @@ results:(
 
 // Run tests
 runTests:{[]
-        ignore:`f3`f4`f5`f6`f7`f8`f9`f10`f11`f12`f13`f14`f15`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
+        ignore:`f03`f04`f05`f06`f07`f08`f09`f10`f11`f12`f13`f14`f15`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
         f@:where like[f:system"f";"f[0-9]*"];
 		f@:iasc"J"$1_'string f;
         d:1+til count f;
