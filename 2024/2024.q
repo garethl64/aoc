@@ -1,4 +1,4 @@
-set'[`$"f",/:string 1+til 25;{}]
+set'[`$"f",/:-2#'"0",/:string 1+til 25;{}]
 
 f01:{[] 
 	p1:sum abs(-). {x iasc x}each l:flip"J"$"   "vs/:read0`:data/input1.txt; / Part 1
