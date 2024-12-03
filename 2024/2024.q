@@ -1,15 +1,23 @@
 set'[`$"f",/:string 1+til 25;{}]
 
 f1:{[] 
-	p1:sum abs(-). {x iasc x}each l:flip"J"$"   "vs/:read0`:data/input1.txt;
-	p2:sum l[0]*0^count'[group l 1]l 0;
+	p1:sum abs(-). {x iasc x}each l:flip"J"$"   "vs/:read0`:data/input1.txt; / Part 1
+	p2:sum l[0]*0^count'[group l 1]l 0; / Part 2
+	(p1;p2)
+	}
+
+f2:{[]
+	d:"J"$" "vs/:read0`:data/input2.txt; / Get data
+	f:{(not 0b in'(abs 1_'deltas each x)within\:1 3)&(|/)not 0b in''(0>;0<)@\:1_'deltas each x}; / Safe report check
+	p1:sum f d; / Part 1
+	p2:sum 1b in'sums[0,count each d]_f raze d _/:'til each count each d; / Part 2
 	(p1;p2)
 	}
 
 // Testing
 results:(
         1873376 18997088; 			/ Day 1
-        0N 0N; 						/ Day 2
+        479 531; 					/ Day 2
         0N 0N; 						/ Day 3
         0N 0N; 						/ Day 4
         0N 0N; 						/ Day 5
@@ -37,13 +45,14 @@ results:(
 
 // Run tests
 runTests:{[]
-        ignore:`f2`f3`f4`f5`f6`f7`f8`f9`f10`f11`f12`f13`f14`f15`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
+        ignore:`f3`f4`f5`f6`f7`f8`f9`f10`f11`f12`f13`f14`f15`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
         f@:where like[f:system"f";"f[0-9]*"];
+		f@:iasc"J"$1_'string f;
         d:1+til count f;
         i:f?f except ignore;
         t:1!flip`day`ms`mem`resMatch`res!"JJJB*"$\:();
         t upsert/{[f;fn;r;i] enlist[i],f[fn i;r i],enlist r i}[fts;f;results]each i 
         }
-fts:{[f;r].Q.gc[];ts:system ssr["ts .dbg.res:f[]";"f";string f];res:r~.dbg.res;delete res from`.dbg;.Q.gc[];ts,enlist res}
+fts:{[f;r].Q.gc[];ts:system ssr["ts .dbg.res:`long$f[]";"f";string f];res:r~.dbg.res;delete res from`.dbg;.Q.gc[];ts,enlist res}
 system"c 40 175"
 if[()~.z.x;show testRes:runTests[]]
