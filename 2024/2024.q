@@ -14,11 +14,22 @@ f02:{[]
 	(p1;p2)
 	}
 
+f03:{[]
+	l:raze read0`:data/input3.txt; / Get data
+	p:(,'[;")"]"mul(",/:-1_'{x cross x}("[0-9],";"[0-9][0-9],";"[0-9][0-9][0-9],")),d:("don't()";"do()"); / Regex patterns; mul([0-9],[0-9]), mul([0-9],[0-9][0-9]), etc.
+	c:(6+sum each{x cross x}1 2 3),count each d; / Counts of strings at each match
+	m:l i:asc raze i:{x+\:'til each y}.(w;c)@\:where 0<count each w:l ss/:p; / All matching strings extracted
+	f:{sum(*).'"J"$","vs'4_'-1_'x}; / Helper function
+	p1:f mm:m except d; / Extract numbers and calculate products
+	p2:f raze'[{x[;1]where x[;0]}{z;$[z in x;("b"$x?z;$[z~last x;z;""]);(first y;z)]}[d]\[(1b;());m]]except d; / Iterate through matches starting with enabled state
+	(p1;p2)
+	}
+
 // Testing
 results:(
         1873376 18997088; 			/ Day 1
         479 531; 					/ Day 2
-        0N 0N; 						/ Day 3
+        157621318 79845780;			/ Day 3
         0N 0N; 						/ Day 4
         0N 0N; 						/ Day 5
         0N 0N; 						/ Day 6
@@ -45,13 +56,13 @@ results:(
 
 // Run tests
 runTests:{[]
-        ignore:`f03`f04`f05`f06`f07`f08`f09`f10`f11`f12`f13`f14`f15`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
+        ignore:`f04`f05`f06`f07`f08`f09`f10`f11`f12`f13`f14`f15`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
         f@:where like[f:system"f";"f[0-9]*"];
 		f@:iasc"J"$1_'string f;
         d:1+til count f;
         i:f?f except ignore;
         t:1!flip`day`ms`mem`resMatch`res!"JJJB*"$\:();
-        t upsert/{[f;fn;r;i] enlist[i],f[fn i;r i],enlist r i}[fts;f;results]each i 
+        t upsert/{[f;fn;r;i] enlist[1+i],f[fn i;r i],enlist r i}[fts;f;results]each i 
         }
 fts:{[f;r].Q.gc[];ts:system ssr["ts .dbg.res:`long$f[]";"f";string f];res:r~.dbg.res;delete res from`.dbg;.Q.gc[];ts,enlist res}
 system"c 40 175"
