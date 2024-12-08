@@ -1,4 +1,4 @@
-set'[`$"f",/:-2#'"0",/:string 1+til 25;{}]
+set'[`$"f",/:-2#'"0",/:string 1+til 25;{}];
 
 f01:{[] 
 	p1:sum abs(-). {x iasc x}each l:flip"J"$"   "vs/:read0`:data/input1.txt; / Part 1
@@ -25,13 +25,35 @@ f03:{[]
 	(p1;p2)
 	}
 
+f04:{[]
+	l:read0`:data/input4.txt; / Get data
+	x:raze til[count l],''where each l="X"; / Each 'X' location
+	a:raze til[count l],''where each l="A"; / Each 'A' location
+	j:((nr;0);(r;0);(0;nr);(0;r);(nr;r);(r;r);(r;nr);(nr;nr:neg r:til 4)); / Vertical/Horizontal/Diagonal paths from each 'X'
+	b:-1+til 3; / Diagonals for X-MAS
+	f:{(,'). x+\:'y}; / Creates lists of all possible directions originating at each 'X'
+	p1:sum(l ./:/:raze f/:\:[x;j])like"XMAS"; / Match where the extracted word is XMAS
+	p2:sum{[l;x;y] 1<sum(|/)like/:[l ./:/:(,').'((x+y 0;x+y 1);(reverse x+y 0;x+y 1));("MAS";"SAM")]}[l;b]each a; / Match where the extracted words spell MAS at least twice
+	(p1;p2)
+	}
+
+f05:{[]
+	r:{("J"$x[;3 4])group "J"$x[;0 1]}l til w:first where~\:[l:read0`:data/input5.txt;""]; / Rules
+	ur:reverse each u:"J"$","vs/:(1+w)_l; / Updates
+	uu:u w:where b:{x~'desc each x}c:count each'r[u]inter\:'u; / Updates in the correct order
+	f:{sum x@'"j"$%[;2] -1+count each x}; / Helper function to sum middle numbers
+	p1:f uu; / Part 1
+	p2:f u[w]@'idesc each c[w:where not b]; / Part 2
+	(p1;p2)
+	}
+
 // Testing
 results:(
         1873376 18997088; 			/ Day 1
         479 531; 					/ Day 2
         157621318 79845780;			/ Day 3
-        0N 0N; 						/ Day 4
-        0N 0N; 						/ Day 5
+        2530 1921; 					/ Day 4
+        5639 5273;					/ Day 5
         0N 0N; 						/ Day 6
         0N 0N; 						/ Day 7
         0N 0N; 						/ Day 8
@@ -56,7 +78,7 @@ results:(
 
 // Run tests
 runTests:{[]
-        ignore:`f04`f05`f06`f07`f08`f09`f10`f11`f12`f13`f14`f15`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
+        ignore:`f06`f07`f08`f09`f10`f11`f12`f13`f14`f15`f16`f17`f18`f19`f20`f21`f22`f23`f24`f25; //~ Remove as we solve
         f@:where like[f:system"f";"f[0-9]*"];
 		f@:iasc"J"$1_'string f;
         d:1+til count f;
