@@ -38,14 +38,53 @@ f04:{[]
 	}
 
 f05:{[]
-	r:{("J"$x[;3 4])group "J"$x[;0 1]}l til w:first where~\:[l:read0`:data/input5.txt;""]; / Rules
-	ur:reverse each u:"J"$","vs/:(1+w)_l; / Updates
+	r:{("J"$x[;3 4])group "J"$x[;0 1]}l til w:first where~\:[l:read0`:data/input5.txt;""]; / Get data and parse rules
+	ur:reverse each u:"J"$","vs/:(1+w)_l; / Parse updates
 	uu:u w:where b:{x~'desc each x}c:count each'r[u]inter\:'u; / Updates in the correct order
 	f:{sum x@'"j"$%[;2] -1+count each x}; / Helper function to sum middle numbers
 	p1:f uu; / Part 1
 	p2:f u[w]@'idesc each c[w:where not b]; / Part 2
 	(p1;p2)
 	}
+
+f06:{[]
+	l:read0`:data/input6.txt; / Get data
+	s:raze til[count m],/:'where each m:l="^"; / Starting position
+	d:(-1 0;0 1;1 0;0 -1); / Adjustment for a step in each cardinal direction
+	f:{[g;i;l;p;a;o]
+		w:(l ./:ii:p+/:i*\:a o)?"#"; / Number of positions before hitting '#'
+		if[w=count l;:count g union ii til(l ./:ii til w)?" "]; / Check if guard leaves
+		g:g union np:ii til w; / Add new positions
+		l:./[l;(last np;first np);:;"^."]; / Move '^' to space before '#'
+		.z.s[g;i;l;last np;a;(o+1)mod 4]
+		};
+	p1:f[s;til count l;l;first s;d;0];
+	(p1;0N)
+	}
+
+f07:{[]
+	l:read0`:data/input7.txt; / Get data
+	d:("J"$first';reverse@'"J"$" "vs/:last')@\:": "vs/:l; / Totals and equations
+	c:-1+count each d 1; / Number of operators per equation
+	o:(cross/)@'c#\:enlist(+;*); / Permutations of operators in each equation
+	p1:sum d[0]where{1b in x=value@'@[s;where " "=s:" "sv string y;:;]'[raze each string z]}'[d 0;d 1;o]; / Part 1
+	(p1;0N)
+	}
+
+
+f08:{[]
+	l:read0`:data/input8.txt; / Get data
+	n:distinct[(raze/)l]except"."; / Distinct nodes
+	f:{raze til[count m],/:'where each m:x=y}; / Calculates indices in map for node
+	i:n f\:l; / Indices of nodes grouped by frequency type
+	ii:i@'{raze{(cross/)(y;x except y)}[x]'[x]}each til each count each i; / Permutations of pairs of nodes
+	g:{y where not 0b in'within\:[y:y+(::;neg)@\:(-'). y;0,x]} -1+count l; / Find points with map bounds for part 1
+	g2:{y where not 0b in'within\:[y:raze y+/:'(::;neg)@\:til[x]*\:(-'). y;0,x]} -1+count l; / Find points with map bounds for part 2
+	p1:count distinct raze raze g each'ii; / Part 1
+	p2:count distinct raze raze g2 each'ii; / Part 2
+	(p1;p2)
+	}
+
 
 // Testing
 results:(
@@ -89,3 +128,30 @@ runTests:{[]
 fts:{[f;r].Q.gc[];ts:system ssr["ts .dbg.res:`long$f[]";"f";string f];res:r~.dbg.res;delete res from`.dbg;.Q.gc[];ts,enlist res}
 system"c 40 175"
 if[()~.z.x;show testRes:runTests[]]
+
+
+
+/ Old code
+/
+f06:{[]
+	l:read0`:data/input6.txt; / Get data
+	s:raze til[count m],/:'where each m:l="^"; / Starting position
+	d:(-1 0;0 1;1 0;0 -1); / Adjustment for a step in each cardinal direction
+	f:{[g;l;p;a;o]
+		$["."=c:l . np:p+a o; / Check if next position is safe
+			.z.s[g union enlist np;./[l;(p;np);:;".^"];np;a;o]; / Continue
+		"#"=c; / Check if we have to turn 90 degrees right
+			.z.s[g union enlist np;./[l;(p;np);:;".^"];np:p+a m;a;m:mod[o+1;4]]; / Turn 90 degrees and continue
+			count g] / Return number of positions when guard exits
+			};
+	p1:f[s;l;first s;d;0];
+	(p1;0N)
+	}
+
+
+
+
+
+
+
+\
